@@ -1,3 +1,5 @@
+from functools import partial
+
 from kivy.core.window import Window
 from kivy.uix.button import Button
 from kivy.uix.image import Image
@@ -11,6 +13,7 @@ Window.size = (500, 600)
 
 
 class MainApp(MDApp):
+
     def getLinkInfo(self, instance):
         try:
             self.link = self.linkinput.text
@@ -20,8 +23,17 @@ class MainApp(MDApp):
             self.length = str(self.yt.length) if hasattr(self.yt, 'length') else "No Length"
 
             self.titleLabel.text = f"Title: {self.title}"
+            self.titleLabel.pos_hint = {"center_x": 0.5, "center_y": .40}
+
             self.viewLabel.text = f"Views: {self.views}"
+            self.viewLabel.pos_hint = {"center_x": 0.5, "center_y": .35}
+
             self.lengthLabel.text = f"Length: {self.length} seconds"
+            self.lengthLabel.pos_hint = {"center_x": 0.5, "center_y": .30}
+
+            self.downloadButton.text = "Download"
+            self.downloadButton.pos_hint = {'center_x': 0.5, 'center_y': 0.20}
+            self.downloadButton.size_hint = (.2, .1)
 
             print(f"Title: {self.title}")
             print(f"Views: {self.views}")
@@ -32,6 +44,17 @@ class MainApp(MDApp):
             self.viewLabel.text = "Please check the link and try again."
             self.lengthLabel.text = ""
 
+    def downloadVideo(self, event):
+        try:
+            self.ys = self.yt.streams.get_highest_resolution()
+            print("Downloading Video...")
+
+            self.ys.download("Downloads")
+
+            print("Video Downloaded Successfully")
+        except Exception as e:
+            print(f"Error occurred during download: {e}")
+
     def build(self):
         layout = MDRelativeLayout(md_bg_color=(248 / 255, 200 / 255, 220 / 255, 1))
 
@@ -41,24 +64,28 @@ class MainApp(MDApp):
                                  pos_hint={"center_x": 0.5, "center_y": 0.75},
                                  color=(1, 0, 0, 1), font_size=20)
         self.linkinput = TextInput(hint_text="Enter the Youtube Link", size_hint=(.90, None),
-                                   pos_hint={"center_x": 0.5, "center_y": 0.5}, height=50, font_size=20,
+                                   pos_hint={"center_x": 0.5, "center_y": 0.60}, height=50, font_size=20,
                                    foreground_color=(0, 0.5, 0, 1), font_name="Comic")
 
-        self.linkbutton = Button(text="Get Video", pos_hint={'center_x': 0.5, 'center_y': 0.3}, size_hint=(.2, .1),
+        self.linkbutton = Button(text="Get Video", pos_hint={'center_x': 0.5, 'center_y': 0.50}, size_hint=(.2, .1),
                                  background_color=(0, 1, 0, 1), color=(1, 1, 1, 1), font_size=20)
         self.linkbutton.bind(on_press=self.getLinkInfo)
 
         self.titleLabel = Label(text="Title: ", size_hint=(.5, .5),
-                                pos_hint={"center_x": 0.5, "center_y": .2},
+                                pos_hint={"center_x": 0.5, "center_y": .40},
                                 color=(1, 0, 0, 1), font_size=20)
 
         self.viewLabel = Label(text="View: ", size_hint=(.5, .5),
-                               pos_hint={"center_x": 0.5, "center_y": .15},
+                               pos_hint={"center_x": 0.5, "center_y": .35},
                                color=(1, 0, 0, 1), font_size=20)
 
         self.lengthLabel = Label(text="Length: ", size_hint=(.5, .5),
-                                 pos_hint={"center_x": 0.5, "center_y": .1},
+                                 pos_hint={"center_x": 0.5, "center_y": .30},
                                  color=(1, 0, 0, 1), font_size=20)
+
+        self.downloadButton = Button(text="Download", pos_hint={'center_x': 0.5, 'center_y': 0.20}, size_hint=(.2, .1),
+                                     background_color=(0, 1, 0, 1), color=(1, 1, 1, 1), font_size=20)
+        self.downloadButton.bind(on_press=self.downloadVideo)
 
         layout.add_widget(self.img)
         layout.add_widget(self.youtubelink)
@@ -67,6 +94,7 @@ class MainApp(MDApp):
         layout.add_widget(self.titleLabel)
         layout.add_widget(self.viewLabel)
         layout.add_widget(self.lengthLabel)
+        layout.add_widget(self.downloadButton)
 
         return layout
 
