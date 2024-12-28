@@ -2,6 +2,7 @@ import re
 
 from kivy.core.window import Window
 from kivy.uix.button import Button
+from kivy.uix.dropdown import DropDown
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
@@ -55,6 +56,16 @@ class MainApp(MDApp):
             self.downloadButton.text = "Download"
             self.downloadButton.pos_hint = {'center_x': 0.5, 'center_y': 0.20}
             self.downloadButton.size_hint = (.2, .1)
+
+            self.video = self.yt.streams.filter(file_extension='mp4').order_by('resolution').desc().first()
+            # self.video.download("Downloads")
+
+            self.dropDown = DropDown()
+            for video in self.video:
+                btn = Button(text=video.resolution, size_hint_y=None, height=44)
+                btn.bind(on_release=lambda btn: self.dropDown.select(btn.text))
+
+                self.dropDown.add_widget(btn)
 
             print(f"Title: {self.title}")
             print(f"Views: {self.views}")
