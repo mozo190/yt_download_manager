@@ -22,7 +22,7 @@ class MainApp(MDApp):
         self.downloadButtonAdded = False
 
     def is_valid_youtube_link(self, link):
-        pattern = r"(?:https?://)?(?:www\.)?youtube\.com/watch\?v=[0-9A-Za-z_-]{11}"
+        pattern = r"(?:www\.)?youtube\.com/watch\?v=[0-9A-Za-z_-]{11}"
         return re.search(pattern, link) is not None
 
     def getLinkInfo(self, instance):
