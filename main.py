@@ -67,6 +67,13 @@ class MainApp(MDApp):
 
                 self.dropDown.add_widget(btn)
 
+            self.main_button = Button(text="144p", size_hint=(None, None), pos=(350, 65), height=44)
+            self.main_button.bind(on_release=self.dropDown.open)
+
+            self.dropDown.bind(on_select=lambda instance, x: setattr(self.main_button, 'text', x))
+
+            self.layout.add_widget(self.main_button)
+
             print(f"Title: {self.title}")
             print(f"Views: {self.views}")
             print(f"Length: {self.length}")
@@ -78,10 +85,10 @@ class MainApp(MDApp):
 
     def downloadVideo(self, event):
         try:
-            self.ys = self.yt.streams.get_highest_resolution()
+            self.ys = self.yt.streams.filter(file_extension='mp4', resolution=self.main_button.text).first()
             print("Downloading Video...")
 
-            self.ys.download("Downloads")
+            self.ys.download("Downloads")  # Downloads the video to the Downloads folder
 
             print("Video Downloaded Successfully")
         except Exception as e:
