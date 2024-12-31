@@ -16,6 +16,20 @@ Window.size = (500, 600)
 class MainApp(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.downloadButton = None
+        self.video = None
+        self.dropDown = None
+        self.main_button = None
+        self.yt = None
+        self.ys = None
+        self.layout = None
+        self.img = None
+        self.youtube_link = None
+        self.link_input = None
+        self.linkbutton = None
+        self.titleLabel = None
+        self.viewLabel = None
+        self.lengthLabel = None
         self.link = ""
         self.title = ""
         self.views = ""
@@ -28,7 +42,7 @@ class MainApp(MDApp):
 
     def getLinkInfo(self, instance):
         try:
-            self.link = self.linkinput.text
+            self.link = self.link_input.text
 
             if not self.is_valid_youtube_link(self.link):
                 self.titleLabel.text = "Invalid Youtube Link"
@@ -99,12 +113,12 @@ class MainApp(MDApp):
 
         self.img = Image(source="assets/img/logo.png", size_hint=(.5, .5),
                          pos_hint={"center_x": 0.5, "center_y": 0.90})
-        self.youtubelink = Label(text="Please Enter the Youtube link to Download", size_hint=(.5, .5),
-                                 pos_hint={"center_x": 0.5, "center_y": 0.75},
-                                 color=(1, 0, 0, 1), font_size=20)
-        self.linkinput = TextInput(hint_text="Enter the Youtube Link", size_hint=(.90, None),
-                                   pos_hint={"center_x": 0.5, "center_y": 0.60}, height=50, font_size=20,
-                                   foreground_color=(0, 0.5, 0, 1), font_name="Comic")
+        self.youtube_link = Label(text="Please Enter the Youtube link to Download", size_hint=(.5, .5),
+                                  pos_hint={"center_x": 0.5, "center_y": 0.75},
+                                  color=(1, 0, 0, 1), font_size=20)
+        self.link_input = TextInput(hint_text="Enter the Youtube Link", size_hint=(.90, None),
+                                    pos_hint={"center_x": 0.5, "center_y": 0.60}, height=50, font_size=20,
+                                    foreground_color=(0, 0.5, 0, 1), font_name="Comic")
 
         self.linkbutton = Button(text="Get Video", pos_hint={'center_x': 0.5, 'center_y': 0.50}, size_hint=(.2, .1),
                                  background_color=(0, 1, 0, 1), color=(1, 1, 1, 1), font_size=20)
@@ -123,8 +137,8 @@ class MainApp(MDApp):
                                  color=(1, 0, 0, 1), font_size=20)
 
         self.layout.add_widget(self.img)
-        self.layout.add_widget(self.youtubelink)
-        self.layout.add_widget(self.linkinput)
+        self.layout.add_widget(self.youtube_link)
+        self.layout.add_widget(self.link_input)
         self.layout.add_widget(self.linkbutton)
         self.layout.add_widget(self.titleLabel)
         self.layout.add_widget(self.viewLabel)
